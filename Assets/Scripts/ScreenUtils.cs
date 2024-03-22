@@ -10,6 +10,7 @@ public static class ScreenUtils
 	static int screenWidth;
 	static int screenHeight;
 	
+	// world coordinates
 	// cached for efficient boundary checking
 	static float screenLeft;
 	static float screenRight;
@@ -20,6 +21,18 @@ public static class ScreenUtils
 
     public static float ScreenLeft{
 		get { return screenLeft; }
+	}
+
+    public static float ScreenRight{
+		get { return screenRight; }
+	}
+
+    public static float ScreenTop{
+		get { return screenTop; }
+	}
+
+    public static float ScreenBot{
+		get { return screenBot; }
 	}
 	
 	public static void Initialize(){

@@ -10,8 +10,6 @@ public class UserMovement : MonoBehaviour
     public float moveSpeed = 1.25f;
     public float speed;
 
-    // world coordinates
-    float screenLeft, screenRight, screenTop, screenBot;
     // overlay on the player square object
     float colliderHalfWidth, colliderHalfHeight;
 
@@ -21,29 +19,15 @@ public class UserMovement : MonoBehaviour
     {
         speed = moveSpeed * Time.deltaTime;
 
-        float screenZ = -Camera.main.transform.position.z;
-        Debug.Log($"width: {Screen.width}  height: {Screen.height}");
-        //Debug.Log($"object position: {transform.position.x}");
-        
-        Vector3 botLeftCornerScreen = new Vector3(0, 0, screenZ);
-        Vector3 botLeftCornerWorld = Camera.main.ScreenToWorldPoint(botLeftCornerScreen);
-
-        Vector3 topRightCornerScreen = new Vector3(Screen.width, Screen.height, screenZ);
-        Vector3 topRightCornerWorld = Camera.main.ScreenToWorldPoint(topRightCornerScreen);
-
-        screenLeft = botLeftCornerWorld.x;
-        screenRight = topRightCornerWorld.x;
-        screenTop = topRightCornerWorld.y;
-        screenBot = botLeftCornerWorld.y;
-
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
         Vector3 boxColliderDim = collider.bounds.max - collider.bounds.min;
         colliderHalfWidth = boxColliderDim.x / 2;
         colliderHalfHeight = boxColliderDim.y / 2;
 
-        Debug.Log($"top.y:{screenTop}  bot.y:{screenBot}  left.x:{screenLeft}  right.x:{screenRight}  width.coli:{colliderHalfWidth}  height.coli:{colliderHalfHeight}");
-        
-        //transform.position = new Vector2(screenLeft+colliderHalfWidth, transform.position.y);
+        Debug.Log($"top.y:{ScreenUtils.ScreenTop}  bot.y:{ScreenUtils.ScreenBot}  " +
+            $"left.x:{ScreenUtils.ScreenLeft}  right.x:{ScreenUtils.ScreenRight}  " +
+            $"width.coli:{colliderHalfWidth}  height.coli:{colliderHalfHeight}");
+    
     }
 
     // Update is called once per frame
@@ -62,61 +46,22 @@ public class UserMovement : MonoBehaviour
 
     public void KeepInScreen()
     {
-        if(transform.position.x < screenLeft)
+        if(transform.position.x < ScreenUtils.ScreenLeft)
         {
-            transform.position = new Vector2(screenLeft+colliderHalfWidth, transform.position.y);
+            transform.position = new Vector2(ScreenUtils.ScreenLeft+colliderHalfWidth, transform.position.y);
         }
-        if(transform.position.x > screenRight)
+        if(transform.position.x > ScreenUtils.ScreenRight)
         {
-            transform.position = new Vector2(screenRight-colliderHalfWidth, transform.position.y);
+            transform.position = new Vector2(ScreenUtils.ScreenRight-colliderHalfWidth, transform.position.y);
         }
-        if(transform.position.y > screenTop)
+        if(transform.position.y > ScreenUtils.ScreenTop)
         {
-            transform.position = new Vector2(transform.position.x, screenTop-colliderHalfHeight);
+            transform.position = new Vector2(transform.position.x, ScreenUtils.ScreenTop-colliderHalfHeight);
         }
-        if(transform.position.y < screenBot)
+        if(transform.position.y < ScreenUtils.ScreenBot)
         {
-            transform.position = new Vector2(transform.position.x, screenBot+colliderHalfHeight);
+            transform.position = new Vector2(transform.position.x, ScreenUtils.ScreenBot+colliderHalfHeight);
         }
-
-        //Vector2 position = transform.position;
-
-        //if (position.x - colliderHalfWidth <= screenLeft)
-        //{
-        //    position.x = screenLeft + colliderHalfWidth;
-        //}
-        //if ((position.x + colliderHalfWidth) >= screenRight)
-        //{
-        //    position.x = screenRight - colliderHalfWidth;
-        //}
-        //if ((position.y + colliderHalfHeight) >= screenTop)
-        //{
-        //    position.y = screenTop - colliderHalfHeight;
-        //}
-        //if ((position.y - colliderHalfWidth) <= screenBot)
-        //{
-        //    position.y = screenBot + colliderHalfHeight;
-        //}
-
-
-        //if (position.x < screenLeft)
-        //{
-        //    //Physics.SyncTransforms();
-        //    position.x = screenLeft;
-        //    //Physics.SyncTransforms();
-        //}
-        //if (position.x > screenRight)
-        //{
-        //    position.x = screenRight;
-        //}
-        //if (position.y > screenTop)
-        //{
-        //    position.y = screenTop;
-        //}
-        //if (position.y < screenBot)
-        //{
-        //    position.y = screenBot;
-        //}
 
     }
 }
